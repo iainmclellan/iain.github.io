@@ -3,10 +3,10 @@
 Auto-updating README for this repository.
 
 ## Site title
-Iain - Cloud & Automation Engineer
+Iain — Cloud & Automation Engineer
 
 ## Repository snapshot
-Last updated: Managed automatically by scripts/generate-readme.js
+Last updated: 2026-09-12 11:02:44.137 UTC
 
 ### File types
 - .css: 1
