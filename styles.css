@@ -1,63 +1,74 @@
+/* Global Dark Mode */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #0d0d0d;
+  color: #e6e6e6;
   margin: 0;
   padding: 0;
-  background: #fafafa;
-  color: #222;
-  line-height: 1.6;
+  text-align: center;
 }
 
-.section {
+/* Layout */
+.container {
   max-width: 900px;
   margin: 60px auto;
   padding: 0 20px;
 }
 
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-bottom: 1px solid #eee;
-}
-
+/* Profile Image */
 .profile {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 20px;
+  border: 3px solid #333;
 }
 
+/* Typography */
 .subtitle {
-  color: #555;
+  color: #aaa;
   font-size: 1.1rem;
+  margin-bottom: 40px;
 }
 
+.section-title {
+  margin-top: 60px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .item {
-  background: white;
+  background: #1a1a1a;
   padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  border: 1px solid #333;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.project {
-  background: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  border: 1px solid #e5e5e5;
+/* Contact */
+.contact a {
+  color: #4da3ff;
+  text-decoration: none;
 }
 
+.contact a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
 footer {
-  text-align: center;
-  padding: 40px;
+  margin-top: 60px;
   color: #777;
   font-size: 0.9rem;
 }
