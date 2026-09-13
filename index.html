@@ -18,6 +18,21 @@
 
     <h2 class="section-title">Core Skills</h2>
 
+    <div class="search-wrap">
+      <label for="skill-search" class="search-label">Search page</label>
+      <div class="search-input-wrap">
+        <input
+          id="skill-search"
+          class="search-input"
+          type="search"
+          placeholder="Try: Terraform, AWS, PowerShell, LinkedIn"
+          aria-describedby="search-results"
+        >
+        <button id="search-clear" class="search-clear" type="button" aria-label="Clear search">×</button>
+      </div>
+      <p id="search-results" class="search-results">Showing all skills</p>
+    </div>
+
     <div class="grid">
 
       <div class="item">⚙️ <strong>DevOps Strategy</strong><br>Culture adoption, automation, continuous improvement.</div>
@@ -55,10 +70,120 @@
     </div>
 
     <footer>
-      <p>© 2026 Iain McLellan — Senior DevOps Engineer</p>
+      <p>© 2026 Iain McLellan — Lead DevOps Engineer</p>
     </footer>
 
   </div>
+
+  <script>
+    (function () {
+      const searchInput = document.getElementById('skill-search');
+      const clearButton = document.getElementById('search-clear');
+      const skillCards = Array.from(document.querySelectorAll('.grid .item'));
+      const contactRows = Array.from(document.querySelectorAll('.contact p'));
+      const resultText = document.getElementById('search-results');
+      const targets = [...skillCards, ...contactRows];
+
+      function escapeRegExp(value) {
+        return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      function highlightText(root, query) {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const textNodes = [];
+
+        while (walker.nextNode()) {
+          textNodes.push(walker.currentNode);
+        }
+
+        const pattern = new RegExp(escapeRegExp(query), 'gi');
+
+        textNodes.forEach((textNode) => {
+          const value = textNode.nodeValue;
+          if (!value || !pattern.test(value)) {
+            pattern.lastIndex = 0;
+            return;
+          }
+
+          pattern.lastIndex = 0;
+          const fragment = document.createDocumentFragment();
+          let lastIndex = 0;
+          let match = pattern.exec(value);
+
+          while (match) {
+            const start = match.index;
+            if (start > lastIndex) {
+              fragment.appendChild(document.createTextNode(value.slice(lastIndex, start)));
+            }
+
+            const mark = document.createElement('mark');
+            mark.textContent = value.slice(start, start + match[0].length);
+            fragment.appendChild(mark);
+
+            lastIndex = start + match[0].length;
+            match = pattern.exec(value);
+          }
+
+          if (lastIndex < value.length) {
+            fragment.appendChild(document.createTextNode(value.slice(lastIndex)));
+          }
+
+          textNode.parentNode.replaceChild(fragment, textNode);
+        });
+      }
+
+      targets.forEach((el) => {
+        el.dataset.originalHtml = el.innerHTML;
+        el.dataset.searchText = el.textContent.toLowerCase();
+      });
+
+      function updateResults() {
+        const rawQuery = searchInput.value.trim();
+        const query = rawQuery.toLowerCase();
+        let visibleSkills = 0;
+        let visibleContacts = 0;
+
+        clearButton.classList.toggle('is-visible', rawQuery.length > 0);
+
+        targets.forEach((el) => {
+          el.innerHTML = el.dataset.originalHtml;
+        });
+
+        skillCards.forEach((card) => {
+          const match = !query || card.dataset.searchText.includes(query);
+          card.style.display = match ? '' : 'none';
+          if (match) {
+            visibleSkills += 1;
+            if (query) highlightText(card, rawQuery);
+          }
+        });
+
+        contactRows.forEach((row) => {
+          const match = !query || row.dataset.searchText.includes(query);
+          row.style.display = match ? '' : 'none';
+          if (match) {
+            visibleContacts += 1;
+            if (query) highlightText(row, rawQuery);
+          }
+        });
+
+        if (!query) {
+          resultText.textContent = 'Showing all skills and contact details';
+          return;
+        }
+
+        resultText.textContent = `Showing ${visibleSkills} skill${visibleSkills === 1 ? '' : 's'} and ${visibleContacts} contact match${visibleContacts === 1 ? '' : 'es'} for "${rawQuery}"`;
+      }
+
+      searchInput.addEventListener('input', updateResults);
+      clearButton.addEventListener('click', function () {
+        searchInput.value = '';
+        updateResults();
+        searchInput.focus();
+      });
+      updateResults();
+    })();
+  </script>
 
 </body>
 </html>
